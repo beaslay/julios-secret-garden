@@ -77,7 +77,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               className="flex items-center justify-center w-full py-3 outline-2 outline-offset-2 focus-visible:outline-accent"
               aria-label="Prestations"
             >
-              <Briefcase className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+              <Briefcase className="w-6 h-6 animate-ping-slow hover:scale-110 transition text-primary-foreground hover:text-accent" />
               <span className="sr-only">Prestations</span>
             </button>
             
@@ -86,7 +86,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               className="flex items-center justify-center w-full py-3 outline-2 outline-offset-2 focus-visible:outline-accent"
               aria-label="Contact"
             >
-              <Mail className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+              <Mail className="w-6 h-6 animate-ping-slow hover:scale-110 transition text-primary-foreground hover:text-accent" />
               <span className="sr-only">Contact</span>
             </button>
           </div>
@@ -119,7 +119,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
           aria-label="Prestations"
         >
-          <Briefcase className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+          <Briefcase className="w-6 h-6 animate-ping-slow hover:scale-110 transition text-primary-foreground hover:text-accent" />
         </button>
         
         <button
@@ -127,7 +127,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
           aria-label="Contact"
         >
-          <Mail className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+          <Mail className="w-6 h-6 animate-ping-slow hover:scale-110 transition text-primary-foreground hover:text-accent" />
         </button>
       </div>
 
@@ -178,7 +178,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       {/* Main Content */}
-      <main className="lg:ml-48 ml-12 lg:ml-48">
+      <main className="lg:ml-48 ml-12">
         {children}
       </main>
     </div>
