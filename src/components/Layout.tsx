@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -86,7 +85,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       {isMobileMenuOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden fixed inset-0 bg-primary text-primary-foreground z-50 animate-slide-in-left transition-all ease-out duration-300"
+          className="lg:hidden fixed inset-0 bg-primary text-primary-foreground z-50 slide-in-left-menu"
         >
           <div className="p-4 flex justify-between items-center border-b border-accent">
             <span
@@ -138,7 +137,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       {/* Main Content */}
-      <main className="lg:ml-64">
+      <main className="lg:ml-64 pt-16 lg:pt-0">
         {children}
       </main>
     </div>

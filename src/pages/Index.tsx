@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Sparkles, Mask, Gem } from "lucide-react";
 
@@ -21,11 +20,10 @@ const Index = () => {
             <h1
               className={`
                 font-cormorant font-bold mb-6 animate-fade-in
-                text-6xl md:text-7xl lg:text-8xl
-                sm:text-6xl xs:text-5xl
+                text-4xl sm:text-6xl md:text-7xl lg:text-8xl
               `}
               style={{
-                fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
+                fontSize: "clamp(2rem, 6vw, 5.5rem)",
                 lineHeight: 1.1,
               }}
             >
