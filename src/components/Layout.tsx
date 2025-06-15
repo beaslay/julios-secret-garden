@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
@@ -15,14 +15,27 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <div className="min-h-screen bg-secondary">
       {/* Desktop Navigation */}
       <nav className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-primary text-primary-foreground flex-col z-50">
         <div className="p-8">
-          <Link to="/" className="text-2xl font-cormorant font-bold">
+          <span
+            className="text-[28px] font-cormorant font-extrabold tracking-wide text-white select-none"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            aria-label="Julio"
+          >
             Julio
-          </Link>
+          </span>
         </div>
         
         <div className="flex-1 px-8">
@@ -31,7 +44,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`block py-2 text-lg font-inter transition-colors ${
+                  className={`block py-2 text-lg font-inter transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
                     location.pathname === item.path
                       ? "text-accent"
                       : "text-primary-foreground hover:text-accent"
@@ -45,7 +58,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
         
         <div className="p-8">
-          <Link to="/contact" className="btn-primary w-full text-center">
+          <Link to="/contact" className="btn-primary w-full text-center outline-2 outline-offset-2 focus-visible:outline-accent">
             Réserver
           </Link>
         </div>
@@ -53,12 +66,17 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Mobile Header */}
       <header className="lg:hidden bg-primary text-primary-foreground p-4 flex justify-between items-center">
-        <Link to="/" className="text-xl font-cormorant font-bold">
+        <span
+          className="text-xl font-cormorant font-extrabold tracking-wide text-white select-none"
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        >
           Julio
-        </Link>
+        </span>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2"
+          className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
+          aria-controls="mobile-menu"
+          aria-expanded={isMobileMenuOpen}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -66,14 +84,22 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 bg-primary text-primary-foreground z-50 animate-slide-in-left">
+        <div
+          id="mobile-menu"
+          className="lg:hidden fixed inset-0 bg-primary text-primary-foreground z-50 animate-slide-in-left transition-all ease-out duration-300"
+        >
           <div className="p-4 flex justify-between items-center border-b border-accent">
-            <Link to="/" className="text-xl font-cormorant font-bold">
+            <span
+              className="text-xl font-cormorant font-extrabold text-white select-none"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
               Julio
-            </Link>
+            </span>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2"
+              className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
+              aria-controls="mobile-menu"
+              aria-expanded={isMobileMenuOpen}
             >
               <X size={24} />
             </button>
@@ -86,7 +112,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     to={item.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block py-3 text-lg font-inter transition-colors ${
+                    className={`block py-3 text-lg font-inter transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
                       location.pathname === item.path
                         ? "text-accent"
                         : "text-primary-foreground hover:text-accent"
@@ -102,7 +128,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <Link
                 to="/contact"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="btn-primary w-full text-center"
+                className="btn-primary w-full text-center outline-2 outline-offset-2 focus-visible:outline-accent"
               >
                 Réserver
               </Link>
