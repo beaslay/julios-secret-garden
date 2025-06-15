@@ -11,8 +11,22 @@ export default function HeroSection() {
         transition={{ duration: 0.6 }}
         className="relative z-10 text-center text-4xl font-display text-primary-foreground"
       >
-        <h1 className="mb-4 text-5xl lg:text-6xl font-bold">Julio</h1>
-        <p className="text-lg lg:text-xl font-sans">Présence discrète · Énergie magnétique</p>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-4 text-5xl lg:text-6xl font-bold"
+        >
+          Julio
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-lg lg:text-xl font-sans"
+        >
+          Présence discrète · Énergie magnétique
+        </motion.p>
       </motion.div>
     </section>
   );

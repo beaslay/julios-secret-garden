@@ -1,6 +1,7 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Briefcase, Mail, Menu } from "lucide-react";
+import { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -16,6 +17,7 @@ const navItems = [
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleServicesClick = () => {
     navigate("/services");
@@ -23,6 +25,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   const handleContactClick = () => {
     navigate("/contact");
+  };
+
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
   };
 
   return (
@@ -79,7 +85,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </nav>
 
       {/* Mobile Header */}
-      <header className="lg:hidden bg-[#1E1E1E]/90 text-primary-foreground p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40 h-12">
+      <header className="lg:hidden bg-[#1E1E1E]/90 text-primary-foreground p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40 h-16">
         <Link 
           to="/" 
           className="text-xl font-display font-bold tracking-wide text-white select-none focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
@@ -88,10 +94,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           Julio
         </Link>
         
-        <Sheet>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild>
             <button 
               aria-label="Ouvrir le menu" 
+              aria-expanded={isMenuOpen}
               className="lg:hidden p-2 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
             >
               <Menu size={24} />
@@ -103,6 +110,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 to="/" 
                 className="text-xl font-display font-bold text-white select-none mb-8 block focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                 aria-label="Julio - Retour à l'accueil"
+                onClick={handleNavClick}
               >
                 Julio
               </Link>
@@ -113,6 +121,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                     <li key={item.path}>
                       <Link
                         to={item.path}
+                        onClick={handleNavClick}
                         className={`block py-3 text-lg font-sans transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2 ${
                           location.pathname === item.path
                             ? "text-accent"
@@ -127,7 +136,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 
                 <div className="mt-8 space-y-4">
                   <button
-                    onClick={handleServicesClick}
+                    onClick={() => {
+                      handleServicesClick();
+                      setIsMenuOpen(false);
+                    }}
                     className="flex items-center w-full py-3 text-white hover:text-accent transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                     aria-label="Prestations"
                   >
@@ -136,7 +148,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   </button>
                   
                   <button
-                    onClick={handleContactClick}
+                    onClick={() => {
+                      handleContactClick();
+                      setIsMenuOpen(false);
+                    }}
                     className="flex items-center w-full py-3 text-white hover:text-accent transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                     aria-label="Contact"
                   >
@@ -151,7 +166,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </header>
 
       {/* Mobile bandeau latéral réduit */}
-      <div className="lg:hidden fixed left-0 top-12 bottom-0 w-12 bg-[#1E1E1E]/90 z-30 flex flex-col items-center py-4 space-y-4">
+      <div className="lg:hidden fixed left-0 top-16 bottom-0 w-12 bg-[#1E1E1E]/90 z-30 flex flex-col items-center py-4 space-y-4">
         <button
           onClick={handleServicesClick}
           className="p-2 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
@@ -170,7 +185,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Main Content */}
-      <main className="lg:ml-48 ml-12">
+      <main className="lg:ml-48 ml-12 pt-16 lg:pt-0">
         {children}
       </main>
     </div>

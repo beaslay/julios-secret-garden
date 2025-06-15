@@ -5,6 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 const schema = z.object({
   name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
@@ -57,13 +58,22 @@ const Contact = () => {
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-8 lg:px-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl lg:text-6xl font-display font-bold text-primary mb-8 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-5xl lg:text-6xl font-display font-bold text-primary mb-8 text-center"
+          >
             Contact
-          </h1>
+          </motion.h1>
           
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               <h2 className="text-3xl font-display font-semibold text-primary mb-6">
                 Une conversation en toute discrétion
               </h2>
@@ -105,10 +115,14 @@ const Contact = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Contact Form */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl p-8 shadow-lg">
                 <h3 className="text-2xl font-display font-semibold text-primary mb-6">
                   Envoyez-moi un message
@@ -123,11 +137,12 @@ const Contact = () => {
                       type="text"
                       id="name"
                       {...register("name")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                       placeholder="Votre nom"
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
                     {errors.name && (
-                      <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                      <p id="name-error" className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                     )}
                   </div>
                   
@@ -139,11 +154,12 @@ const Contact = () => {
                       type="email"
                       id="email"
                       {...register("email")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                       placeholder="votre@email.com"
+                      aria-describedby={errors.email ? "email-error" : undefined}
                     />
                     {errors.email && (
-                      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                      <p id="email-error" className="text-red-500 text-sm mt-1">{errors.email.message}</p>
                     )}
                   </div>
                   
@@ -155,24 +171,26 @@ const Contact = () => {
                       id="message"
                       {...register("message")}
                       rows={6}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors resize-none font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors resize-none font-sans focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                       placeholder="Décrivez votre demande avec délicatesse..."
+                      aria-describedby={errors.message ? "message-error" : undefined}
                     />
                     {errors.message && (
-                      <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                      <p id="message-error" className="text-red-500 text-sm mt-1">{errors.message.message}</p>
                     )}
                   </div>
                   
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                    aria-label={isSubmitting ? "Envoi en cours du message" : "Envoyer le message"}
                   >
                     {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
                   </button>
                 </div>
               </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

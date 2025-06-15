@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 interface Project {
   id: number;
@@ -21,22 +22,48 @@ const projects: Project[] = [
 ];
 
 export default function PortfolioGrid() {
+  const TOTAL_SLOTS = 5;
+  const placeholders = Math.max(0, TOTAL_SLOTS - projects.length);
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {projects.map((project) => (
-        <motion.div
-          key={project.id}
-          whileHover={{ scale: 1.05 }}
-          className="overflow-hidden rounded-lg shadow-lg"
-        >
-          <img 
-            src={project.cover} 
-            alt={project.title} 
-            className="h-64 w-full object-cover"
-            loading="lazy"
-          />
-        </motion.div>
-      ))}
-    </div>
+    <PhotoProvider>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {projects.map((project, index) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            whileHover={{ scale: 1.05 }}
+            className="overflow-hidden rounded-lg shadow-lg cursor-pointer"
+          >
+            <PhotoView src={project.cover}>
+              <img 
+                src={project.cover} 
+                alt={project.title} 
+                className="h-64 w-full object-cover transition-transform duration-300"
+                loading="lazy"
+              />
+            </PhotoView>
+          </motion.div>
+        ))}
+        
+        {/* Placeholders pour les emplacements restants */}
+        {Array.from({ length: placeholders }, (_, index) => (
+          <motion.div
+            key={`placeholder-${index}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: (projects.length + index) * 0.1 }}
+            className="aspect-[3/4] rounded-lg border border-neutral-700 bg-neutral-900/40
+                       flex items-center justify-center text-neutral-400 italic text-sm
+                       hover:scale-105 transition-transform duration-300"
+            aria-label="Emplacement photo à venir"
+          >
+            À venir
+          </motion.div>
+        ))}
+      </div>
+    </PhotoProvider>
   );
 }
