@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Sparkles, User, Gem } from "lucide-react";
 
@@ -5,7 +6,7 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative flex items-center" style={{ height: 'calc(100vh - 4rem)' }}>
+      <section className="relative flex items-end" style={{ height: 'calc(100vh - 4rem)' }}>
         <div className="absolute inset-0">
           <img
             src="/lovable-uploads/2f19b9d4-8a21-4465-98f9-aae1f9ba1d5d.png"
@@ -13,9 +14,9 @@ const Index = () => {
             loading="lazy"
             className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
         </div>
-        <div className="relative z-10 container mx-auto px-8 lg:px-16">
+        <div className="relative z-10 container mx-auto px-8 lg:px-16 pb-16">
           <div className="max-w-2xl text-primary-foreground">
             <h1
               className={`
