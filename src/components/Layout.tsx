@@ -1,19 +1,18 @@
 
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, Briefcase, Mail } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Accueil" },
   { path: "/about", label: "À propos" },
-  { path: "/services", label: "Prestations" },
   { path: "/gallery", label: "Galerie" },
-  { path: "/contact", label: "Contact" },
 ];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -22,20 +21,35 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     } else {
       document.body.classList.remove("overflow-hidden");
     }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
   }, [isMobileMenuOpen]);
 
+  const handleServicesClick = () => {
+    navigate("/services");
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleContactClick = () => {
+    navigate("/contact");
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-secondary overflow-auto">
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-primary text-primary-foreground flex-col z-50">
+      <nav className="hidden lg:flex fixed left-0 top-0 h-full w-48 bg-[#1E1E1E]/90 text-primary-foreground flex-col z-50">
         <div className="p-8">
-          <span
-            className="text-[28px] font-cormorant font-extrabold tracking-wide text-white select-none"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            aria-label="Julio"
+          <Link 
+            to="/" 
+            className="text-[28px] font-display font-bold tracking-wide text-white select-none outline-2 outline-offset-2 focus-visible:outline-accent"
+            aria-label="Julio - Accueil"
           >
             Julio
-          </span>
+          </Link>
         </div>
         
         <div className="flex-1 px-8">
@@ -44,7 +58,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`block py-2 text-lg font-inter transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
+                  className={`block py-2 text-lg font-sans transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
                     location.pathname === item.path
                       ? "text-accent"
                       : "text-primary-foreground hover:text-accent"
@@ -55,23 +69,39 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
               </li>
             ))}
           </ul>
-        </div>
-        
-        <div className="p-8">
-          <Link to="/contact" className="btn-primary w-full text-center outline-2 outline-offset-2 focus-visible:outline-accent">
-            Réserver
-          </Link>
+          
+          {/* Icônes animées */}
+          <div className="mt-8 space-y-4">
+            <button
+              onClick={handleServicesClick}
+              className="flex items-center justify-center w-full py-3 outline-2 outline-offset-2 focus-visible:outline-accent"
+              aria-label="Prestations"
+            >
+              <Briefcase className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+              <span className="sr-only">Prestations</span>
+            </button>
+            
+            <button
+              onClick={handleContactClick}
+              className="flex items-center justify-center w-full py-3 outline-2 outline-offset-2 focus-visible:outline-accent"
+              aria-label="Contact"
+            >
+              <Mail className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+              <span className="sr-only">Contact</span>
+            </button>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Header */}
-      <header className="lg:hidden bg-primary text-primary-foreground p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40">
-        <span
-          className="text-xl font-cormorant font-extrabold tracking-wide text-white select-none"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+      <header className="lg:hidden bg-[#1E1E1E]/90 text-primary-foreground p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40 h-12">
+        <Link 
+          to="/" 
+          className="text-xl font-display font-bold tracking-wide text-white select-none outline-2 outline-offset-2 focus-visible:outline-accent"
+          aria-label="Julio - Accueil"
         >
           Julio
-        </span>
+        </Link>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
@@ -82,19 +112,39 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </button>
       </header>
 
+      {/* Mobile bandeau latéral réduit */}
+      <div className="lg:hidden fixed left-0 top-12 bottom-0 w-12 bg-[#1E1E1E]/90 z-30 flex flex-col items-center py-4 space-y-4">
+        <button
+          onClick={handleServicesClick}
+          className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
+          aria-label="Prestations"
+        >
+          <Briefcase className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+        </button>
+        
+        <button
+          onClick={handleContactClick}
+          className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
+          aria-label="Contact"
+        >
+          <Mail className="w-6 h-6 animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
+        </button>
+      </div>
+
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden fixed inset-0 bg-primary text-primary-foreground z-50 slide-in-left-menu"
+          className="lg:hidden fixed inset-0 bg-[#1E1E1E]/90 text-primary-foreground z-50 slide-in-left-menu"
         >
           <div className="p-4 flex justify-between items-center border-b border-accent">
-            <span
-              className="text-xl font-cormorant font-extrabold text-white select-none"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            <Link 
+              to="/" 
+              className="text-xl font-display font-bold text-white select-none outline-2 outline-offset-2 focus-visible:outline-accent"
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Julio
-            </span>
+            </Link>
             <button
               onClick={() => setIsMobileMenuOpen(false)}
               className="p-2 outline-2 outline-offset-2 focus-visible:outline-accent"
@@ -112,7 +162,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   <Link
                     to={item.path}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block py-3 text-lg font-inter transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
+                    className={`block py-3 text-lg font-sans transition-colors outline-2 outline-offset-2 focus-visible:outline-accent ${
                       location.pathname === item.path
                         ? "text-accent"
                         : "text-primary-foreground hover:text-accent"
@@ -123,22 +173,12 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 </li>
               ))}
             </ul>
-            
-            <div className="mt-8">
-              <Link
-                to="/contact"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="btn-primary w-full text-center outline-2 outline-offset-2 focus-visible:outline-accent"
-              >
-                Réserver
-              </Link>
-            </div>
           </nav>
         </div>
       )}
 
       {/* Main Content */}
-      <main className="lg:ml-64">
+      <main className="lg:ml-48 ml-12 lg:ml-48">
         {children}
       </main>
     </div>

@@ -1,12 +1,25 @@
 
 import { useState } from "react";
-import { Eye, Lock } from "lucide-react";
+import { Eye, Lock, Key } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate, useLocation } from "react-router-dom";
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import 'react-photo-view/dist/react-photo-view.css';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Gallery = () => {
   const [accessToken, setAccessToken] = useState("");
   const [tokenExpiry, setTokenExpiry] = useState<Date | null>(null);
   const [showPrivateGallery, setShowPrivateGallery] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Placeholder images for public gallery
   const publicImages = [
@@ -67,64 +80,91 @@ const Gallery = () => {
     toast.success("Accès autorisé à la galerie privée");
   };
 
+  const handleKeyClick = () => {
+    setIsDialogOpen(false);
+    navigate("/contact?gallery=1");
+  };
+
   const isTokenValid = accessToken && tokenExpiry && new Date() < tokenExpiry;
 
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-8 lg:px-16">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-5xl lg:text-6xl font-cormorant font-bold text-primary mb-8 text-center">
+          <h1 className="text-5xl lg:text-6xl font-display font-bold text-primary mb-8 text-center">
             Galerie
           </h1>
 
           {/* Public Gallery */}
           <section className="mb-16">
-            <h2 className="text-3xl font-cormorant font-semibold text-primary mb-8 flex items-center">
+            <h2 className="text-3xl font-display font-semibold text-primary mb-8 flex items-center">
               <Eye className="mr-3" size={32} />
               Galerie publique
             </h2>
             
-            <div className="slider-gallery pb-4">
-              {publicImages.map((image, index) => (
-                <div key={index} className="flex-none w-80 h-96 snap-start">
-                  <img
-                    src={image}
-                    alt={`Photo ${index + 1}`}
-                    className="w-full h-full object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                  />
-                </div>
-              ))}
-            </div>
+            <PhotoProvider>
+              <div className="overflow-x-auto flex gap-4 pb-4">
+                {publicImages.map((image, index) => (
+                  <div key={index} className="flex-none w-80 h-96">
+                    <PhotoView src={image}>
+                      <img
+                        src={image}
+                        alt={`Photo ${index + 1}`}
+                        className="w-full h-full object-cover rounded-2xl shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      />
+                    </PhotoView>
+                  </div>
+                ))}
+              </div>
+            </PhotoProvider>
           </section>
 
           {/* Private Gallery Access */}
           <section className="mb-16">
             <div className="bg-white rounded-2xl p-8 shadow-lg">
-              <h2 className="text-3xl font-cormorant font-semibold text-primary mb-6 flex items-center">
+              <h2 className="text-3xl font-display font-semibold text-primary mb-6 flex items-center">
                 <Lock className="mr-3" size={32} />
                 Galerie privée
               </h2>
               
-              <p className="text-lg font-inter text-gray-600 mb-6">
+              <p className="text-lg font-sans text-gray-600 mb-6">
                 Accès exclusif pour une clientèle privilégiée. 
                 Un token de sécurité sera généré et validé via Telegram.
               </p>
               
               <div className="space-y-4">
                 {!accessToken ? (
-                  <button
-                    onClick={handleTokenRequest}
-                    className="btn-primary"
-                  >
-                    Demander l'accès
-                  </button>
+                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                      <button className="btn-primary">
+                        Demander l'accès
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle className="font-display">Accès galerie privée</DialogTitle>
+                        <DialogDescription className="font-sans">
+                          Cliquez sur la clé pour accéder au formulaire de contact
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex justify-center py-6">
+                        <button
+                          onClick={handleKeyClick}
+                          className="outline-2 outline-offset-2 focus-visible:outline-accent"
+                          aria-label="Accéder au formulaire de contact"
+                        >
+                          <Key className="w-12 h-12 text-accent animate-ping-slow hover:scale-110 transition-transform" />
+                        </button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 ) : (
                   <div className="space-y-4">
                     <div className="bg-gray-50 rounded-xl p-4">
-                      <p className="text-sm text-gray-600 mb-2">Token généré :</p>
+                      <p className="text-sm text-gray-600 mb-2 font-sans">Token généré :</p>
                       <p className="token-badge">{accessToken}</p>
                       {tokenExpiry && (
-                        <p className="text-xs text-gray-500 mt-2">
+                        <p className="text-xs text-gray-500 mt-2 font-sans">
                           Expire le : {tokenExpiry.toLocaleString()}
                         </p>
                       )}
@@ -147,21 +187,25 @@ const Gallery = () => {
           {/* Private Gallery Content */}
           {showPrivateGallery && (
             <section>
-              <h3 className="text-2xl font-cormorant font-semibold text-accent mb-6">
+              <h3 className="text-2xl font-display font-semibold text-accent mb-6">
                 Contenu exclusif
               </h3>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {privateImages.map((image, index) => (
-                  <div key={index} className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                    <img
-                      src={image}
-                      alt={`Photo privée ${index + 1}`}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
+              <PhotoProvider>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {privateImages.map((image, index) => (
+                    <div key={index} className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                      <PhotoView src={image}>
+                        <img
+                          src={image}
+                          alt={`Photo privée ${index + 1}`}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        />
+                      </PhotoView>
+                    </div>
+                  ))}
+                </div>
+              </PhotoProvider>
             </section>
           )}
         </div>

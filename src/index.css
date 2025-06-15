@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -53,17 +54,17 @@
   }
 
   body {
-    @apply bg-secondary text-foreground font-inter;
+    @apply bg-secondary text-foreground font-sans;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-cormorant;
+    @apply font-display;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-primary text-primary-foreground hover:bg-accent transition-all duration-300;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-primary text-primary-foreground hover:bg-accent transition-all duration-300 outline-2 outline-offset-2 focus-visible:outline-accent;
   }
   
   .card-offer {
@@ -94,7 +95,7 @@
   /* Mobile header height fix */
   @media (max-width: 1023px) {
     .mobile-hero-height {
-      height: calc(100vh - 4rem);
+      height: calc(100vh - 3rem);
     }
   }
   
