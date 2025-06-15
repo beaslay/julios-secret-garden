@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Sparkles, User, Gem } from "lucide-react";
 
@@ -21,16 +20,15 @@ const Index = () => {
             <h1
               className={`
                 font-cormorant font-bold mb-6 animate-fade-in
-                text-4xl sm:text-6xl md:text-7xl lg:text-8xl
               `}
               style={{
-                fontSize: "clamp(2rem, 6vw, 5.5rem)",
+                fontSize: "clamp(2rem, 5vw, 4rem)",
                 lineHeight: 1.1,
               }}
             >
               L'élégance à votre service
             </h1>
-            <p className="text-xl lg:text-2xl font-inter mb-8 opacity-90 animate-fade-in" style={{ color: "#fff" }}>
+            <p className="text-lg lg:text-xl font-inter mb-8 opacity-90 animate-fade-in" style={{ color: "#fff" }}>
               Accompagnement discret et raffiné pour une clientèle exigeante
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
