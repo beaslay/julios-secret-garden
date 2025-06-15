@@ -1,7 +1,11 @@
 
-import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Briefcase, Mail } from "lucide-react";
+import { Briefcase, Mail, Menu } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const navItems = [
   { path: "/", label: "Accueil" },
@@ -10,35 +14,15 @@ const navItems = [
 ];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.documentElement.classList.add("overflow-hidden");
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.documentElement.classList.remove("overflow-hidden");
-      document.body.classList.remove("overflow-hidden");
-    }
-    
-    // Cleanup on unmount
-    return () => {
-      document.documentElement.classList.remove("overflow-hidden");
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [isMobileMenuOpen]);
-
   const handleServicesClick = () => {
     navigate("/services");
-    setIsMobileMenuOpen(false);
   };
 
   const handleContactClick = () => {
     navigate("/contact");
-    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -103,15 +87,67 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         >
           Julio
         </Link>
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
-          aria-controls="mobile-menu"
-          aria-expanded={isMobileMenuOpen}
-          aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        
+        <Sheet>
+          <SheetTrigger asChild>
+            <button 
+              aria-label="Ouvrir le menu" 
+              className="lg:hidden p-2 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+            >
+              <Menu size={24} />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-3/4 bg-neutral-900 text-white">
+            <div className="p-4">
+              <Link 
+                to="/" 
+                className="text-xl font-display font-bold text-white select-none mb-8 block focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                aria-label="Julio - Retour à l'accueil"
+              >
+                Julio
+              </Link>
+              
+              <nav>
+                <ul className="space-y-4">
+                  {navItems.map((item) => (
+                    <li key={item.path}>
+                      <Link
+                        to={item.path}
+                        className={`block py-3 text-lg font-sans transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2 ${
+                          location.pathname === item.path
+                            ? "text-accent"
+                            : "text-white hover:text-accent"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                
+                <div className="mt-8 space-y-4">
+                  <button
+                    onClick={handleServicesClick}
+                    className="flex items-center w-full py-3 text-white hover:text-accent transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                    aria-label="Prestations"
+                  >
+                    <Briefcase className="w-6 h-6 mr-3" />
+                    <span>Prestations</span>
+                  </button>
+                  
+                  <button
+                    onClick={handleContactClick}
+                    className="flex items-center w-full py-3 text-white hover:text-accent transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                    aria-label="Contact"
+                  >
+                    <Mail className="w-6 h-6 mr-3" />
+                    <span>Contact</span>
+                  </button>
+                </div>
+              </nav>
+            </div>
+          </SheetContent>
+        </Sheet>
       </header>
 
       {/* Mobile bandeau latéral réduit */}
@@ -132,54 +168,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <Mail className="w-6 h-6 hover:animate-pulse hover:scale-110 transition text-primary-foreground hover:text-accent" />
         </button>
       </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div
-          id="mobile-menu"
-          className="lg:hidden fixed inset-0 bg-[#1E1E1E]/90 text-primary-foreground z-50 slide-in-left-menu"
-        >
-          <div className="p-4 flex justify-between items-center border-b border-accent">
-            <Link 
-              to="/" 
-              className="text-xl font-display font-bold text-white select-none focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Julio - Retour à l'accueil"
-            >
-              Julio
-            </Link>
-            <button
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
-              aria-controls="mobile-menu"
-              aria-expanded={isMobileMenuOpen}
-              aria-label="Fermer le menu"
-            >
-              <X size={24} />
-            </button>
-          </div>
-          
-          <nav className="p-4">
-            <ul className="space-y-4">
-              {navItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block py-3 text-lg font-sans transition-colors focus-visible:outline-accent focus-visible:outline-2 outline-offset-2 ${
-                      location.pathname === item.path
-                        ? "text-accent"
-                        : "text-primary-foreground hover:text-accent"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      )}
 
       {/* Main Content */}
       <main className="lg:ml-48 ml-12">

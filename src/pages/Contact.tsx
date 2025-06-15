@@ -1,51 +1,47 @@
 
-import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
+const schema = z.object({
+  name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+  email: z.string().email("Email invalide"),
+  message: z.string().min(10, "Le message doit contenir au moins 10 caractères")
+});
+
+type FormData = z.infer<typeof schema>;
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    pseudo: "",
-    email: "",
-    message: ""
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const location = useLocation();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<FormData>({
+    resolver: zodResolver(schema)
+  });
 
   // Check if coming from gallery access request
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get('gallery') === '1') {
-      setFormData(prev => ({
-        ...prev,
-        message: "Demande d'accès galerie privée"
-      }));
+      setValue('message', 'Demande d\'accès galerie privée');
     }
-  }, [location]);
+  }, [location, setValue]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate secretary processing
+  const onSubmit = async (data: FormData) => {
     try {
-      console.log("Message envoyé à la secrétaire:", formData);
+      console.log("Message envoyé à la secrétaire:", data);
       
       // Simulate Telegram notification
       const telegramMessage = {
         type: "new_contact",
         data: {
-          pseudo: formData.pseudo,
-          email: formData.email,
-          message: formData.message,
+          ...data,
           timestamp: new Date().toISOString()
         }
       };
       
       console.log("Notification Telegram:", telegramMessage);
-      
-      // Reset form
-      setFormData({ pseudo: "", email: "", message: "" });
       
       toast.success("Message envoyé avec succès", {
         description: "Votre demande a été transmise. Vous recevrez une réponse sous 24h."
@@ -54,16 +50,7 @@ const Contact = () => {
     } catch (error) {
       console.error("Erreur lors de l'envoi:", error);
       toast.error("Erreur lors de l'envoi du message");
-    } finally {
-      setIsSubmitting(false);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
   };
 
   return (
@@ -122,26 +109,26 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div>
-              <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-lg">
+              <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl p-8 shadow-lg">
                 <h3 className="text-2xl font-display font-semibold text-primary mb-6">
                   Envoyez-moi un message
                 </h3>
                 
                 <div className="space-y-6">
                   <div>
-                    <label htmlFor="pseudo" className="block text-sm font-sans font-medium text-gray-700 mb-2">
-                      Pseudo *
+                    <label htmlFor="name" className="block text-sm font-sans font-medium text-gray-700 mb-2">
+                      Nom *
                     </label>
                     <input
                       type="text"
-                      id="pseudo"
-                      name="pseudo"
-                      value={formData.pseudo}
-                      onChange={handleChange}
-                      required
+                      id="name"
+                      {...register("name")}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
-                      placeholder="Votre pseudo"
+                      placeholder="Votre nom"
                     />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -151,13 +138,13 @@ const Contact = () => {
                     <input
                       type="email"
                       id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
+                      {...register("email")}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
                       placeholder="votre@email.com"
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    )}
                   </div>
                   
                   <div>
@@ -166,14 +153,14 @@ const Contact = () => {
                     </label>
                     <textarea
                       id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
+                      {...register("message")}
                       rows={6}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-accent focus:border-transparent transition-colors resize-none font-sans outline-2 outline-offset-2 focus-visible:outline-accent"
                       placeholder="Décrivez votre demande avec délicatesse..."
                     />
+                    {errors.message && (
+                      <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                    )}
                   </div>
                   
                   <button

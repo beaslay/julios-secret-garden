@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle, Dialog
 import { Key } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
+import PortfolioGrid from '@/components/PortfolioGrid';
 import 'react-photo-view/dist/react-photo-view.css';
 
 const Gallery = () => {
@@ -54,11 +55,16 @@ const Gallery = () => {
           </p>
         </div>
 
-        {/* Galerie publique */}
+        {/* Galerie publique avec PortfolioGrid */}
         <section className="mb-16">
           <h2 className="text-2xl font-display text-primary mb-8 text-center">
             Galerie Publique
           </h2>
+          
+          <div className="mb-8">
+            <PortfolioGrid />
+          </div>
+          
           <PhotoProvider>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Images existantes */}
@@ -117,7 +123,7 @@ const Gallery = () => {
                   className="btn-primary focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
                   aria-label="Demander l'accès à la galerie privée"
                 >
-                  <Key className="w-4 h-4 mr-2" />
+                  <Key className="w-4 h-4 mr-2 animate-ping-slow" />
                   Demander l'accès
                 </Button>
               </DialogTrigger>
@@ -130,7 +136,7 @@ const Gallery = () => {
                 </DialogHeader>
                 <div className="flex flex-col items-center justify-center p-6">
                   <Key 
-                    className="w-12 h-12 animate-pulse text-accent mb-4 cursor-pointer hover:scale-110 transition-transform"
+                    className="w-12 h-12 animate-ping-slow text-accent mb-4 cursor-pointer hover:scale-110 transition-transform"
                     onClick={handlePrivateGalleryAccess}
                     aria-label="Accéder à la demande de galerie privée"
                   />

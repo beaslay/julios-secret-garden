@@ -1,56 +1,13 @@
 
 import { Link } from "react-router-dom";
 import { Sparkles, User, Gem } from "lucide-react";
+import HeroSection from "@/components/HeroSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative flex items-end h-screen">
-        <div className="absolute inset-0">
-          <img
-            src="/lovable-uploads/2f19b9d4-8a21-4465-98f9-aae1f9ba1d5d.png"
-            alt="Julio - Portrait professionnel"
-            className="w-full h-full object-cover object-top"
-            priority="true"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
-        </div>
-        <div className="relative z-10 container mx-auto px-8 lg:px-16 pb-16">
-          <div className="max-w-2xl text-primary-foreground">
-            <h1
-              className={`
-                font-display font-bold mb-6 animate-fade-in
-              `}
-              style={{
-                fontSize: "clamp(2rem, 5vw, 4rem)",
-                lineHeight: 1.1,
-              }}
-            >
-              L'élégance à votre service
-            </h1>
-            <p className="text-lg lg:text-xl font-sans mb-8 opacity-90 animate-fade-in" style={{ color: "#fff" }}>
-              Accompagnement discret et raffiné pour une clientèle exigeante
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
-              <Link
-                to="/about"
-                className="btn-primary focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
-                aria-label="Découvrir les services de Julio"
-              >
-                Découvrir
-              </Link>
-              <Link
-                to="/contact"
-                className="btn-primary bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
-                aria-label="Réserver un rendez-vous avec Julio"
-              >
-                Réserver
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section avec animations */}
+      <HeroSection />
 
       {/* Introduction Section */}
       <section className="py-20 bg-white">
