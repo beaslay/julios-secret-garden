@@ -11,7 +11,7 @@ const Index = () => {
             src="/lovable-uploads/2f19b9d4-8a21-4465-98f9-aae1f9ba1d5d.png"
             alt="Julio - Portrait professionnel"
             loading="lazy"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/40 to-transparent"></div>
         </div>
