@@ -5,7 +5,7 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center">
+      <section className="relative flex items-center" style={{ height: 'calc(100vh - 4rem)' }}>
         <div className="absolute inset-0">
           <img
             src="/lovable-uploads/2f19b9d4-8a21-4465-98f9-aae1f9ba1d5d.png"

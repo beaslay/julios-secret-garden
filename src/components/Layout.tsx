@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -64,7 +65,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       </nav>
 
       {/* Mobile Header */}
-      <header className="lg:hidden bg-primary text-primary-foreground p-4 flex justify-between items-center">
+      <header className="lg:hidden bg-primary text-primary-foreground p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40">
         <span
           className="text-xl font-cormorant font-extrabold tracking-wide text-white select-none"
           style={{ fontFamily: "'Cormorant Garamond', serif" }}
@@ -137,7 +138,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       )}
 
       {/* Main Content */}
-      <main className="lg:ml-64 pt-16 lg:pt-0">
+      <main className="lg:ml-64">
         {children}
       </main>
     </div>

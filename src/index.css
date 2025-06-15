@@ -90,6 +90,19 @@
     /* fallback for old browsers */
     transition: transform 0.3s cubic-bezier(0.25,0.8,0.25,1);
   }
+  
+  /* Mobile header height fix */
+  @media (max-width: 1023px) {
+    .mobile-hero-height {
+      height: calc(100vh - 4rem);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .mobile-hero-height {
+      height: 100vh;
+    }
+  }
 }
 
 @keyframes slide-in-left-menu {
