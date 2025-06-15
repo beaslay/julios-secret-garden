@@ -1,5 +1,6 @@
+
 import { Link } from "react-router-dom";
-import { Sparkles, Mask, Gem } from "lucide-react";
+import { Sparkles, mask, Gem } from "lucide-react";
 
 const Index = () => {
   return (
@@ -82,7 +83,7 @@ const Index = () => {
               {/* Présence */}
               <div className="text-center" aria-label="Présence">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-accent">
-                  <Mask
+                  <mask
                     size={32}
                     strokeWidth={1.5}
                     color="#fff"
