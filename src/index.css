@@ -60,11 +60,20 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
+
+  /* Global focus ring styles */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply focus-visible:outline-accent focus-visible:outline-2 outline-offset-2;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-primary text-primary-foreground hover:bg-accent transition-all duration-300 outline-2 outline-offset-2 focus-visible:outline-accent;
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-primary text-primary-foreground hover:bg-accent transition-all duration-300 focus-visible:outline-accent focus-visible:outline-2 outline-offset-2;
   }
   
   .card-offer {
@@ -115,4 +124,13 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+/* React Photo View custom styles */
+.PhotoView-Portal {
+  z-index: 9999;
+}
+
+.PhotoView-Slider__BannerWrap {
+  background: rgba(0, 0, 0, 0.9);
 }

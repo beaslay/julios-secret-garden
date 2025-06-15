@@ -11,8 +11,8 @@ const Index = () => {
           <img
             src="/lovable-uploads/2f19b9d4-8a21-4465-98f9-aae1f9ba1d5d.png"
             alt="Julio - Portrait professionnel"
-            loading="lazy"
             className="w-full h-full object-cover object-top"
+            priority="true"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
         </div>
@@ -35,13 +35,15 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
               <Link
                 to="/about"
-                className="btn-primary"
+                className="btn-primary focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                aria-label="Découvrir les services de Julio"
               >
                 Découvrir
               </Link>
               <Link
                 to="/contact"
-                className="btn-primary bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                className="btn-primary bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary focus-visible:outline-accent focus-visible:outline-2 outline-offset-2"
+                aria-label="Réserver un rendez-vous avec Julio"
               >
                 Réserver
               </Link>
